@@ -39,7 +39,8 @@ Its goal is to closely follow today's best practices to bring both a safer and m
 | start | Run the  the webpack development server |
 | test | Run both eslint and mocha tests |
 | test-eslint | Run eslint syntax tests |
-| test:watch | Run mocha tests in Chrome with Karma |
+| test-mocha | Run mocha tests in Chrome with Karma |
+| test:watch | Run and watch unit tests |
 | build | Bundles the project in production mode under the `dist` folder |
 
 ## Dependencies
