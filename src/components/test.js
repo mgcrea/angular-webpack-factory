@@ -23,4 +23,4 @@ export default class TestComponent {
 }
 
 angular.module(TestComponent.name, [])
-  .component(TestComponent.$name, TestComponent)
+  .component(TestComponent.$name, TestComponent);

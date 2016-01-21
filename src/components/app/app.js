@@ -23,4 +23,4 @@ export default class AppComponent extends Component {
 
 angular.module(AppComponent.name, [TestComponent.name])
   .config(AppComponent.$config)
-  .component(AppComponent.$name, AppComponent)
+  .component(AppComponent.$name, AppComponent);

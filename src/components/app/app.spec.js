@@ -1,3 +1,5 @@
+/* eslint-env node, mocha */
+/* global expect:false */
 
 import AppComponent from './app.js';
 
