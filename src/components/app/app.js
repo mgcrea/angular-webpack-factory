@@ -1,5 +1,5 @@
 import template from './app.html';
-import TestComponent from './../test';
+import CounterComponent from './../counter/counter';
 
 class Component {
   static controller = Component;
@@ -21,6 +21,6 @@ export default class AppComponent extends Component {
 
 }
 
-angular.module(AppComponent.name, [TestComponent.name])
+angular.module(AppComponent.name, [CounterComponent.name])
   .config(AppComponent.$config)
   .component(AppComponent.$name, AppComponent);

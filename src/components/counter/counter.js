@@ -1,9 +1,9 @@
-import template from './test.html';
+import template from './counter.html';
 
-export default class TestComponent {
+export default class CounterComponent {
 
-  static $name = 'test';
-  static controller = TestComponent;
+  static $name = 'counter';
+  static controller = CounterComponent;
   static template = template;
   static restrict = 'E';
 
@@ -22,5 +22,5 @@ export default class TestComponent {
 
 }
 
-angular.module(TestComponent.name, [])
-  .component(TestComponent.$name, TestComponent);
+angular.module(CounterComponent.name, [])
+  .component(CounterComponent.$name, CounterComponent);
