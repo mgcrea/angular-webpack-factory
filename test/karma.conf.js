@@ -15,7 +15,8 @@ module.exports = function(config) {
       'node_modules/angular-mocks/angular-mocks.js', {
         pattern: 'src/**/*.spec.js',
         watched: false
-      }
+      },
+      'src/**/*.spec.js'
     ],
 
     // list of files to exclude
@@ -23,12 +24,13 @@ module.exports = function(config) {
 
     // explicit list of plugins to load
     plugins: [
-      require("karma-chai"),
-      require("karma-chrome-launcher"),
-      require("karma-mocha"),
-      require("karma-mocha-reporter"),
-      require("karma-sourcemap-loader"),
-      require("karma-webpack")
+      require('karma-chai'),
+      require('karma-chrome-launcher'),
+      require('karma-mocha'),
+      require('karma-mocha-reporter'),
+      require('karma-phantomjs-launcher'),
+      require('karma-sourcemap-loader'),
+      require('karma-webpack')
     ],
 
     // preprocess matching files before serving them to the browser
@@ -39,7 +41,7 @@ module.exports = function(config) {
 
     // pass webpack config to plugin
     webpack: webpackConfig,
-    webpackServer: {
+    webpackMiddleware: {
       noInfo: webpackConfig.noInfo
     },
 

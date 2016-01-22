@@ -19,9 +19,6 @@ var plugins = [
     'process.env.NODE_ENV': JSON.stringify(env),
     __DEV__: env === 'development'
   }),
-  new webpack.optimize.CommonsChunkPlugin({
-    names: ['vendor']
-  }),
   new HtmlWebpackPlugin({
     title: pkg.description,
     template: path.join(src, 'index.html'),
@@ -41,6 +38,9 @@ switch (env) {
       compress: true,
       sourceMap: true
     }));
+    plugins.push(new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor']
+    }));
     // Use official angular minified files
     externals.angular = 'angular';
     resolve.alias.angular = 'angular/angular.min.js';
@@ -49,9 +49,17 @@ switch (env) {
     ]))
     break;
   case 'development':
+    plugins.push(new webpack.HotModuleReplacementPlugin());
+    plugins.push(new webpack.NoErrorsPlugin());
+    plugins.push(new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor']
+    }));
+    break;
   case 'test':
     plugins.push(new webpack.HotModuleReplacementPlugin());
     plugins.push(new webpack.NoErrorsPlugin());
+    break;
+  default:
     break;
 }
 
