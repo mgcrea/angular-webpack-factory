@@ -1,25 +1,51 @@
+/* eslint-disable */
 
 var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
+var pkg = require('./package.json');
+var deps = pkg.dependencies;
 var debug = process.env.NODE_DEBUG || false;
 var env = process.env.NODE_ENV || 'development';
 var src = path.join(__dirname, 'src');
+
+var externals = {};
 
 var plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(env),
     __DEV__: env === 'development'
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    names: ['vendors']
+  }),
+  new HtmlWebpackPlugin({
+    title: pkg.description,
+    template: path.join(src, 'index.html'),
+    inject: 'body'
   })
 ];
+
+var resolve =   {
+  alias: {}
+};
 
 switch (env) {
   case 'production':
     plugins.push(new webpack.optimize.DedupePlugin());
     plugins.push(new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
+      mangle: true,
+      compress: true,
       sourceMap: true
     }));
+    // Use official angular minified files
+    externals.angular = 'angular';
+    resolve.alias.angular = 'angular/angular.min.js';
+    plugins.push(new CopyWebpackPlugin([
+      {from: 'node_modules/angular', to: 'angular'}
+    ]))
     break;
   case 'development':
   case 'test':
@@ -31,24 +57,33 @@ switch (env) {
 module.exports = {
   debug: debug,
   reload: true,
-  devtool: env === 'production' ? 'source-map' : 'eval-source-map', //more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
+  devtool: env === 'production' ? 'source-map' : 'eval-source-map', // more info:https://webpack.github.io/docs/build-performance.html#sourcemaps and https://webpack.github.io/docs/configuration.html#devtool
   noInfo: env === 'test' ? true : false,
-  entry: env === 'development' ? ['webpack-hot-middleware/client?quiet=true&reload=true', './src/index'] : ['./src/index'],
+  entry: {
+    bundle: './src/index',
+    vendors: [].concat(env === 'development' ? ['webpack-hot-middleware/client?quiet=true&reload=true'] : [])
+  },
   output: {
     path: path.join(__dirname, env === 'production' ? 'dist' : '.tmp'),
+    pathinfo: true,
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   plugins: plugins,
+  resolve: resolve,
+  externals: externals,
   module: {
     loaders: [{
+      test: /angular\.min.js$/,
+      loader: "exports?angular"
+    }, {
       test: /\.js$/,
       include: src,
       loaders: ['ng-annotate', 'babel', 'eslint']
     }, {
-      test: /(\.css|\.scss)$/,
-      // include: src,
-      loaders: ['style', 'css'/*, 'sass'*/]
+      test: /(\.css|\.less)$/,
+      include: src,
+      loaders: ['style', 'css', 'less']
     }, {
       test: /\.html$/,
       include: src,

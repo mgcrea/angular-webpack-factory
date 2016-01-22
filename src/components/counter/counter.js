@@ -7,6 +7,10 @@ export default class CounterComponent {
   static template = template;
   static restrict = 'E';
 
+  constructor($http) {
+    console.warn('$http', $http);
+  }
+
   count = 3;
   onClick(ev) {
     switch (ev.target.textContent) {

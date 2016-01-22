@@ -1,5 +1,4 @@
-// This file configures the development web server
-// which supports hot reloading and synchronized testing.
+/* eslint-disable */
 
 var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
