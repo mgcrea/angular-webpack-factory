@@ -10,7 +10,7 @@ var bundler = webpack(config);
 
 // Run Browsersync and use middleware for Hot Module Replacement
 browserSync({
-  notify: false,
+  notify: process.argv.indexOf('--notify') !== -1,
   open: process.argv.indexOf('--no-open') === -1,
   server: {
     baseDir: ['.tmp', 'src'],

@@ -3,6 +3,7 @@ import template from './counter.html';
 export default class CounterComponent {
 
   static $name = 'counter';
+  static $inject = ['$http'];
   static controller = CounterComponent;
   static template = template;
   static restrict = 'E';

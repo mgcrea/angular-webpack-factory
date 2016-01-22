@@ -4,6 +4,7 @@ var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
+
 var pkg = require('./package.json');
 var deps = pkg.dependencies;
 var debug = process.env.NODE_DEBUG || false;
@@ -19,7 +20,7 @@ var plugins = [
     __DEV__: env === 'development'
   }),
   new webpack.optimize.CommonsChunkPlugin({
-    names: ['vendors']
+    names: ['vendor']
   }),
   new HtmlWebpackPlugin({
     title: pkg.description,
@@ -61,7 +62,7 @@ module.exports = {
   noInfo: env === 'test' ? true : false,
   entry: {
     bundle: './src/index',
-    vendors: [].concat(env === 'development' ? ['webpack-hot-middleware/client?quiet=true&reload=true'] : [])
+    vendor: [].concat(env === 'development' ? ['webpack-hot-middleware/client?quiet=true&reload=true'] : [])
   },
   output: {
     path: path.join(__dirname, env === 'production' ? 'dist' : '.tmp'),
