@@ -30,6 +30,14 @@ var resolve =   {
   alias: {}
 };
 
+if (env !== 'test') {
+  plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'vendor.bundle.js',
+    minChunks: Infinity
+  }));
+}
+
 switch (env) {
   case 'production':
     plugins.push(new webpack.optimize.DedupePlugin());
@@ -37,9 +45,6 @@ switch (env) {
       mangle: true,
       compress: true,
       sourceMap: true
-    }));
-    plugins.push(new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor']
     }));
     // Use official angular minified files
     externals.angular = 'angular';
@@ -49,12 +54,6 @@ switch (env) {
     ]))
     break;
   case 'development':
-    plugins.push(new webpack.HotModuleReplacementPlugin());
-    plugins.push(new webpack.NoErrorsPlugin());
-    plugins.push(new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor']
-    }));
-    break;
   case 'test':
     plugins.push(new webpack.HotModuleReplacementPlugin());
     plugins.push(new webpack.NoErrorsPlugin());
@@ -84,7 +83,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /angular\.min.js$/,
-      loader: "exports?angular"
+      loader: 'exports?angular'
     }, {
       test: /\.js$/,
       include: src,
@@ -92,7 +91,7 @@ module.exports = {
     }, {
       test: /(\.css|\.less)$/,
       include: src,
-      loaders: ['style', 'css', 'less']
+      loaders: ['style', 'css?sourceMap', 'less?sourceMap']
     }, {
       test: /\.html$/,
       include: src,
